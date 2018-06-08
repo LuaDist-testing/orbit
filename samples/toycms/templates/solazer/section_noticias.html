@@ -1,0 +1,14 @@
+$import{"index_view"}
+
+		<div id="primarycontent">
+		  <div class="sectiontitle">Seção: <strong>$title</strong></div>
+		  $show_posts{ template = "noticias_interno.html" }
+		</div>
+		
+		<div id="secondarycontent">
+		
+			<h3>Perfil</h3>
+		  $show_posts{ include_tags = { "perfil" }, count = 1, template = "perfil.html" }
+			
+		</div>
+	

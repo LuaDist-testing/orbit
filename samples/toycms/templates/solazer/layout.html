@@ -1,0 +1,42 @@
+$import{"date"}
+$import{"section_list"}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<title>Só lazer</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="$template_vpath/default.css" />
+</head>
+<body>
+
+<div id="outer">
+	<div id="upbg"></div>
+	<div id="inner">
+		<div id="header">
+			<h1><span>Só </span>lazer</h1>
+			<h2>Diversão você encontra aqui!</h2>
+		</div>
+		<div id="splash"></div>
+	
+		<div id="menu">
+			<ul>
+				<li class="first"><a href="$home_url">Home</a></li>
+				$section_list{ include_tags = { "menu-%" } }
+			</ul>
+
+		<div id="date">$today_day de $today_month_name de $today_year</div>
+		</div>
+
+		$view
+
+		<div id="footer">
+			&copy; Só lazer. All rights reserved. Design by <a href="http://www.nodethirtythree.com/">NodeThirtyThree</a>.
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

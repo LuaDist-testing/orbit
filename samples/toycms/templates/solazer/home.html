@@ -1,0 +1,20 @@
+$import{"home"}
+$import{"index_view"}
+
+		<div id="primarycontent">
+		  $headlines
+		</div>
+		
+		<div id="secondarycontent">
+		
+			<h3>Perfil</h3>
+		  $show_posts{ include_tags = { "perfil" }, count = 1, template = "perfil.html" }
+			
+			<h3>Notícias</h3>
+			<div class="content">
+				<ul class="linklist">
+		  $show_posts{ include_tags = { "noticias" }, template = "noticias.html" }
+				</ul>
+			</div>
+		</div>
+	
