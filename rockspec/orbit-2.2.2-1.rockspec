@@ -1,8 +1,6 @@
--- This file was automatically generated for the LuaDist project.
+package = "Orbit"
 
-package = "orbit"
-
-version = "2.2.1-1"
+version = "2.2.2-1"
 
 description = {
   summary = "MVC for Lua Web Development",
@@ -22,16 +20,10 @@ dependencies = {
   'lua >= 5.1, < 5.2',
 }
 
--- LuaDist source
 source = {
-  tag = "2.2.1-1",
-  url = "git://github.com/LuaDist-testing/orbit.git"
+  url = "git://github.com/keplerproject/orbit.git",
+  tag = "v2.2.2",
 }
--- Original source
--- source = {
---   url = "git://github.com/keplerproject/orbit.git",
---   tag = "v2.2.1",
--- }
 
 build = {
    type = "builtin",
@@ -46,3 +38,4 @@ build = {
    install = { bin = { "src/launchers/orbit", "src/launchers/op.cgi", "src/launchers/op.fcgi" } },
    copy_directories = { "doc", "samples", "test" }
 }
+
