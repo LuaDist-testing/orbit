@@ -2,7 +2,7 @@
 
 package = "orbit"
 
-version = "2.2.0-2"
+version = "2.2.1-1"
 
 description = {
   summary = "MVC for Lua Web Development",
@@ -14,16 +14,23 @@ description = {
   homepage = "http://www.keplerproject.org/orbit"
 }
 
-dependencies = { 'luafilesystem >= 1.5.0', 'lpeg >= 0.9', 'wsapi-xavante >= 1.3', 'cosmo >= 10.04.06' }
+dependencies = {
+  'luafilesystem >= 1.6.2',
+  'lpeg >= 0.12',
+  'wsapi-xavante >= 1.6',
+  'cosmo >= 13.01.30',
+  'lua >= 5.1, < 5.2',
+}
 
 -- LuaDist source
 source = {
-  tag = "2.2.0-2",
+  tag = "2.2.1-1",
   url = "git://github.com/LuaDist-testing/orbit.git"
 }
 -- Original source
 -- source = {
---   url = "http://github.com/downloads/keplerproject/orbit/orbit-2.2.0.tar.gz"
+--   url = "git://github.com/keplerproject/orbit.git",
+--   tag = "v2.2.1",
 -- }
 
 build = {

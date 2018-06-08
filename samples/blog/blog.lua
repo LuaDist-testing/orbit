@@ -1,23 +1,29 @@
 #!/usr/bin/env wsapi.cgi
 
-require "orbit"
-require "orbit.cache"
-require "markdown"
+local orbit = require "orbit"
+local orcache = require "orbit.cache"
+local markdown = require "markdown"
+local wsutil = require "wsapi.util"
 
 --
 -- Declares that this is module is an Orbit app
 --
-module("blog", package.seeall, orbit.new)
+local blog = setmetatable(orbit.new(), { __index = _G })
+if _VERSION == "Lua 5.2" then
+  _ENV = blog
+else
+  setfenv(1, blog)
+end
 
 --
 -- Loads configuration data
 --
-require "blog_config"
+wsutil.loadfile("blog_config.lua", blog)()
 
 --
 -- Initializes DB connection for Orbit's default model mapper
 --
-require("luasql." .. database.driver)
+local luasql = require("luasql." .. database.driver)
 local env = luasql[database.driver]()
 mapper.conn = env:connect(unpack(database.conn_data))
 mapper.driver = database.driver
@@ -340,3 +346,5 @@ end
 -- Adds html functions to the view functions
 
 orbit.htmlify(blog, "layout", "_.+", "render_.+")
+
+return blog
