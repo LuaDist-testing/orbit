@@ -4,14 +4,14 @@ require "markdown"
 local pages = {
   { name = "Home", file = "index", sections = {} },
   { name = "Pages", file = "pages", sections = {} },
-  { name = "Reference", file = "reference", sections = {} },
+  { name = "Referência", file = "reference", sections = {} },
   { name = "Tutorial", file = "example", sections = {} },
-  { name = "License", file = "license", sections = {} }
+  { name = "Licença", file = "license", sections = {} }
 }
 
 local project = {
   name = "Orbit",
-  blurb = "MVC for Lua Web Development",
+  blurb = "MVC desenvolvimento Web em Lua",
   logo = "orbit.png",
 }
 

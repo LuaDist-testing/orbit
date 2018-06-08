@@ -5,7 +5,7 @@ require "orbit.model"
 
 module("orbit", package.seeall)
 
-_VERSION = "2.0.1"
+_VERSION = "2.0.2"
 _COPYRIGHT = "Copyright (C) 2007 Kepler Project"
 _DESCRIPTION = "MVC Web Development for the Kepler platform"
 
@@ -436,6 +436,9 @@ local function dispatcher(app_module, method, path)
       for _, item in ipairs(app_module.dispatch_table[method]) do
 	 local captures = { string.match(path, "^" .. item.pattern .. "$") }
 	 if #captures > 0 then
+	    for i = 1, #captures do
+	      captures[i] = wsapi.util.url_decode(captures[i])
+	    end
 	    return item.handler, captures, item.wsapi
 	 end
       end
@@ -461,8 +464,8 @@ local function make_web_object(app_module, wsapi_env)
   web.set_cookie = function (_, name, value)
 		     res:set_cookie(name, value)
 		   end
-  web.delete_cookie = function (_, name)
-			res:delete_cookie(name)
+  web.delete_cookie = function (_, name, path)
+			res:delete_cookie(name, path)
 		      end
   web.path_info = req.path_info
   web.path_translated = wsapi_env.PATH_TRANSLATED
@@ -495,6 +498,7 @@ function run(app_module, wsapi_env)
 				return handler(web, unpack(captures)) 
 			      end, debug.traceback)
   if not ok then
+    res.status = "500 Internal Server Error"
     res:write(app_module.server_error(web, response))
   else
     res.status = web.status
