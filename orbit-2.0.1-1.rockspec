@@ -2,16 +2,16 @@
 
 package = "orbit"
 
-version = "2.0-1"
+version = "2.0.1-1"
 
 -- LuaDist source
 source = {
-  tag = "2.0-1",
+  tag = "2.0.1-1",
   url = "git://github.com/LuaDist-testing/orbit.git"
 }
 -- Original source
 -- source = {
---   url = "http://luaforge.net/frs/download.php/3451/orbit-2.0.0.tar.gz",
+--   url = "http://luaforge.net/frs/download.php/3458/orbit-2.0.1.tar.gz",
 -- }
 
 description = {

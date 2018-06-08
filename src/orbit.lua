@@ -5,8 +5,8 @@ require "orbit.model"
 
 module("orbit", package.seeall)
 
-_VERSION = "2.0.0"
-_COPYRIGHT = "MIT/X11"
+_VERSION = "2.0.1"
+_COPYRIGHT = "Copyright (C) 2007 Kepler Project"
 _DESCRIPTION = "MVC Web Development for the Kepler platform"
 
 mime_types = {
