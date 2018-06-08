@@ -7,40 +7,41 @@ require "luasql.sqlite3"
 
 local todo = orbit.new()
 
+todo.mapper.logging = true
 todo.mapper.conn = luasql.sqlite3():connect(todo.real_path .. "/todo.db")
 
-local todo_list = todo:model("todo_list")
+todo.list = todo:model("todo_list")
 
 local function item_list()
-  return todo_list:find_all{ order = "created_at desc" }
+  return todo.list:find_all{ order = "created_at desc" }
 end
 
 local function index(web)
-  local list = web:template(todo.items, { items = item_list() })
-  return web:template(todo.index, { items = list })
+  local list = web:page_inline(todo.items, { items = item_list() })
+  return web:page_inline(todo.index, { items = list })
 end
 
 todo:dispatch_get(index, "/")
 
 local function add(web)
-  local item = todo_list:new()
+  local item = todo.list:new()
   item.title = web.input.item or ""
   item:save()
-  return web:template(todo.items, { items = item_list() })
+  return web:page_inline(todo.items, { items = item_list() })
 end
 
 todo:dispatch_post(add, "/add")
 
 local function remove(web, id)
-  local item = todo_list:find(tonumber(id))
+  local item = todo.list:find(tonumber(id))
   item:delete()
-  return web:template(todo.items, { items = item_list() })
+  return web:page_inline(todo.items, { items = item_list() })
 end
 
 todo:dispatch_post(remove, "/remove/(%d+)")
 
 local function toggle(web, id)
-  local item = todo_list:find(tonumber(id))
+  local item = todo.list:find(tonumber(id))
   item.done = not item.done
   item:save()
   return "toggle"
@@ -48,29 +49,32 @@ end
 
 todo:dispatch_post(toggle, "/toggle/(%d+)")
 
+todo:dispatch_static(".+%.js")
+
 todo.index = [===[
+
   <html>
   <head>
   <title>To-do List</title>
-  <script type="text/javascript" src="/jquery/jquery-1.2.3.min.js"></script>
+  <script type="text/javascript" src="$static_link{ '/jquery-1.2.3.min.js' }"></script>
   <script>
   function set_callbacks() {
-    $(".remove").click(function () {
-      $("#items>[item_id=" + $(this).attr("item_id") +"]").slideUp("slow");
-    $("#items").load("todo.op", { id: $(this).attr("item_id"), remove: true },
+    $$(".remove").click(function () {
+      $$("#items>[item_id=" + $$(this).attr("item_id") +"]").slideUp("slow");
+    $$("#items").load("$link{ '/remove/'}" + $$(this).attr("item_id"), {},
       function () { set_callbacks(); });
     });
-    $(".item").click(function () {
-      $.post("todo.op", { id: $(this).attr("item_id"), toggle: true });
+    $$(".item").click(function () {
+      $$.post("$link{ '/toggle/' }" + $$(this).attr("item_id"), {});
     });
   }
 
-  $(document).ready(function () {
-    $("#add").submit(function () {
-      $("#button").attr("disabled", true);
-      $("#items").load("todo.op", { item: $("#title").val()  }, 
-        function () { $("#title").val(""); set_callbacks(); 
-        $("#button").attr("disabled",false); });
+  $$(document).ready(function () {
+    $$("#add").submit(function () {
+      $$("#button").attr("disabled", true);
+      $$("#items").load("$link{ '/add' }", { item: $$("#title").val()  }, 
+        function () { $$("#title").val(""); set_callbacks(); 
+        $$("#button").attr("disabled",false); });
       return false;
     });
     set_callbacks();
@@ -87,7 +91,7 @@ todo.index = [===[
   <ul id="items">
   $items
   </ul>
-  <form id = "add" method = "POST" action = "todo.ws">
+  <form id = "add" method = "POST" action = "$link{ '/add' }">
   <input id = "title" type = "text" name = "item" size = 30 />
   <input id = "button" type = "submit" value = "Add" />
   </form>

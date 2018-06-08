@@ -1,5 +1,5 @@
-Orbit 2.0.2
-http://orbit.luaforge.net/
+Orbit 2.1.0
+http://keplerproject.github.com/orbit
 
 Orbit is an MVC web framework for Lua. The design is inspired by lightweight
 Ruby frameworks such as Camping. It completely abandons the CGILua model
@@ -11,8 +11,21 @@ a Xavante instance for development.
 
 History
 
+* Version 2.1.0 (29/Oct/2009)
+  better decoupling of orbit and orbit.model
+  support for anything with a match method as patterns
+  new options for orbit.model finders: distinct, fields
+  count option for orbit.model now limits number of rows in the SQL
+  logging of queries in orbit.model
+  overhaul of the "orbit" script: better options, --help, sets application path
+  content_type method in the web object to set content type
+  support for PUT and DELETE (methods `dispatch_put` and `dispatch_delete`)
+  orbit.model.recycle(*conn_builder*, *timeout*) function, to make a connection that automatically reopens after a certain time
+  more samples in the samples folder
+  added a "higher-order" $if to Orbit Pages
+  
 * Version 2.0.2 (10/Mar/2009)
-  url-decodes path captures (suggested by Ignacio Burgueño on a Jul 24 email to the Kepler list)
+  url-decodes path captures (suggested by Ignacio Burgueno on a Jul 24 email to the Kepler list)
   added tutorial and new examples
   fixed escape.string
   web:delete_cookie receives a path parameter in order to correctly remove the cookie. Bug report and patch by Ignacio Burgueño
@@ -21,7 +34,8 @@ History
   added alternate name for integer (int)
   better error reporting for missing escape and convert functions
   removed toboolean
-  fixed bugs 13451 and 25418: setting status 500 on application errors not throwing an error if file not exists when invalidating cache
+  fixed bugs 13451 and 25418: setting status 500 on application errors not throwing an error if file not exists when invalidating
+  cache
 
 * Version 2.0.1 (10/Jun/2008): bug-fix release, fixed bug in Orbit pages' redirect function (thanks for Ignacio Burgueño for finding the bug)
 
@@ -41,9 +55,6 @@ luarocks install orbit
 Go to the path where LuaRocks put Orbit to see the sample apps and this documentation.
 LuaRocks will automatically fetch and install any dependencies you don't already have.
 
-You can also get Orbit from LuaForge. Installing in Unix-like systems is done by
-"configure && make && make install", but you have to install any dependencies (such as WSAPI and Xavante) yourself.
-
 To run the supplied example, go to the samples directory
 of this distribution and do:
 
@@ -56,4 +67,4 @@ http://127.0.0.1:8080/ will show "Hello World!"
 http://127.0.0.1:8080/say/foo will show "Hello foo!"
 http://127.0.0.1:8080/anythingelse will show "Not found!"
 
-For more information please check http://orbit.luaforge.net
+For more information please check http://keplerproject.github.com/orbit

@@ -68,7 +68,7 @@ local template_cache = {}
 function load_template(name)
    local template = template_cache[name]
    if not template then
-      local template_file = io.open("templates/" ..
+      local template_file = io.open(toycms.real_path .. "/templates/" ..
 				    template_name .. "/" .. name, "rb")
       if template_file then
   	 template = cosmo.compile(template_file:read("*a"))
@@ -333,7 +333,7 @@ function add_comment(web, post_id)
 			  "/section/" .. post.section_id .. "/xml",
 			  "/post/" .. post.id, "/post/" .. post.id .. "/xml",
 			  "/archive/" .. 
-				string.format("%Y/%m", post.published_at))
+				os.date("%Y/%m", post.published_at))
 	 else comment.approved = false end
 	 comment:save()
 	 return web:redirect(web:link("/post/" .. post_id))
@@ -362,3 +362,4 @@ function check_user(web)
   return models.user:find_by_id_and_password{ user_id, password }
 end
 
+return _M
