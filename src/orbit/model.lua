@@ -1,3 +1,7 @@
+
+require "lpeg"
+require "re"
+
 module("orbit.model", package.seeall)
 
 model_methods = {}
@@ -319,6 +323,17 @@ function dao_methods.find(dao, id, inject)
   return fetch_row(dao, sql)
 end
 
+condition_parser = re.compile([[
+				  top <- {~ <condition>* ~}
+				  s <- %s+ -> ' ' / ''
+				  condition <- (<s> '(' <s> <condition> <s> ')' <s> / <simple>) (<conective> <condition>)*
+				  simple <- <s> (%func <field> <op> '?') -> apply <s> / <s> <field> <op> <field> <s> /
+				            <s> <field> <op> <s>
+				  field <- !<conective> {[%w_]+('.'[%w_]+)?}
+				  op <- {~ <s> [!<>=~]+ <s> / ((%s+ -> ' ') !<conective> %w+)+ <s> ~}
+				  conective <- [aA][nN][dD] / [oO][rR]
+			      ]], { func = lpeg.Carg(1) , apply = function (f, field, op) return f(field, op) end })
+
 local function build_query(dao, condition, args)
   local i = 0
   args = args or {}
@@ -329,22 +344,24 @@ local function build_query(dao, condition, args)
   end
   if condition ~= "" then
     condition = " where " ..
-      string.gsub(condition, "([%w_]+)%s*([%a<>=]+)%s*%?",
+      condition_parser:match(condition, 1,
 		  function (field, op)
 		    i = i + 1
 		    if not args[i] then
 		      return "id=id"
+		    elseif type(args[i]) == "table" and args[i].type == "query" then
+			  return field .. " " .. op .. " (" .. args[i][1] .. ")"
 		    elseif type(args[i]) == "table" then
 		      local values = {}
 		      for j, value in ipairs(args[i]) do
-			values[#values + 1] = field .. " " .. op .. " " ..
+				values[#values + 1] = field .. " " .. op .. " " ..
 		          escape[dao.meta[field].type](value, dao.driver, dao.model.conn)
-                      end
+              end
 		      return "(" .. table.concat(values, " or ") .. ")"
-                    else
+            else
 		      return field .. " " .. op .. " " ..
 		        escape[dao.meta[field].type](args[i], dao.driver, dao.model.conn)
-                    end
+            end
 		  end)
   end
   local order = ""
@@ -367,7 +384,7 @@ local function build_query(dao, condition, args)
     else
        field_list = "*"
     end
-    table_list = dao.table_name
+    table_list = table.concat({ dao.table_name, unpack(args.from or {}) }, ", ")
   end
   local sql = select .. field_list .. " from " .. table_list .. 
     condition .. order .. limit

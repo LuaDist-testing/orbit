@@ -1,6 +1,6 @@
 package = "Orbit"
 
-version = "cvs-2"
+version = "2.2.0-1"
 
 description = {
   summary = "MVC for Lua Web Development",
@@ -15,7 +15,7 @@ description = {
 dependencies = { 'luafilesystem >= 1.5.0', 'lpeg >= 0.9' }
 
 source = {
-  url = "git://github.com/keplerproject/orbit.git"
+  url = "http://github.com/downloads/keplerproject/orbit/orbit-2.2.0.tar.gz"
 }
 
 build = {

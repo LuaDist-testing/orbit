@@ -2,17 +2,7 @@
 
 package = "orbit"
 
-version = "2.1.0-1"
-
--- LuaDist source
-source = {
-  tag = "2.1.0-1",
-  url = "git://github.com/LuaDist-testing/orbit.git"
-}
--- Original source
--- source = {
---   url = "http://cloud.github.com/downloads/keplerproject/orbit/orbit-2.1.0.tar.gz",
--- }
+version = "2.2.0-1"
 
 description = {
   summary = "MVC for Lua Web Development",
@@ -24,7 +14,17 @@ description = {
   homepage = "http://www.keplerproject.org/orbit"
 }
 
-dependencies = { 'luafilesystem >= 1.5.0' }
+dependencies = { 'luafilesystem >= 1.5.0', 'lpeg >= 0.9' }
+
+-- LuaDist source
+source = {
+  tag = "2.2.0-1",
+  url = "git://github.com/LuaDist-testing/orbit.git"
+}
+-- Original source
+-- source = {
+--   url = "http://github.com/downloads/keplerproject/orbit/orbit-2.2.0.tar.gz"
+-- }
 
 build = {
    type = "builtin",
@@ -34,6 +34,7 @@ build = {
      ["orbit.pages"] = "src/orbit/pages.lua",
      ["orbit.cache"] = "src/orbit/cache.lua",
      ["orbit.ophandler"] = "src/orbit/ophandler.lua",
+     ["orbit.routes"] = "src/orbit/routes.lua",
    },
    install = { bin = { "src/launchers/orbit", "src/launchers/op.cgi", "src/launchers/op.fcgi" } },
    copy_directories = { "doc", "samples", "test" }
